@@ -4,7 +4,7 @@ pipeline {
     environment {
         GITHUB_TOKEN = credentials('github-token')
         VENV_DIR = ".venv"
-        HOST = "0.0.0.0"
+        HOST = "127.0.1.1"
         PORT = "5000"
         APP_MODULE = "app:app"
     }
@@ -57,15 +57,6 @@ pipeline {
                 call %VENV_DIR%\\Scripts\\activate
                 start /B gunicorn --bind %HOST%:%PORT% %APP_MODULE% > gunicorn.log 2>&1
                 echo Gunicorn started on http://%HOST%:%PORT%
-                """
-            }
-        }
-
-        stage('Test SMTP Connection') {
-            steps {
-                bat """
-                echo Testing SMTP...
-                powershell -Command "Test-NetConnection smtp.gmail.com -Port 465"
                 """
             }
         }
